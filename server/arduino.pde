@@ -35,10 +35,10 @@ void updateArduino(){
   try
     {
       server.send(new byte[] {
-       (byte) left
-       ,(byte) right
-       ,(byte) (leftRev?100:0)
+       (byte) right
+       ,(byte) left
        ,(byte) (rightRev?0:100)
+       ,(byte) (leftRev?100:0)
       }
       ); 
     } 

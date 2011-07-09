@@ -1,7 +1,7 @@
 String[] fontList;
 PFont androidFont;
 
-float left=0;
+int left=0;
 int right=0;
 boolean leftRev=false;
 boolean rightRev=false;
@@ -9,7 +9,7 @@ boolean rightRev=false;
 boolean fwdbkwOn = false;
 
 void setup() {
-  
+  frameRate(20);
 
   
   size(screenWidth, screenHeight);
@@ -51,7 +51,7 @@ boolean onKeyDown(int keyCode, KeyEvent event) {
     }
   }
   if (keyCode == 103) { //RIGHT
-    if (fwdbkwOn) {
+    if (!fwdbkwOn) {
       leftRev =false;
       rightRev = true;
       left = 255;
@@ -101,6 +101,7 @@ void draw() {
   updateOsc();
 
   background(0);
+  fill(255);
   // Display current GPS data
   text("Latitude: "+currentLatitude, 20, 40);
   text("Longitude: "+currentLongitude, 20, 75);

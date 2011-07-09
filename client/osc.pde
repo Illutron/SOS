@@ -1,25 +1,36 @@
-import oscP5.*;
-//import netP5.*;
+XMPPMachine talk;
 
-OscP5 oscP5;
-NetAddress myRemoteLocation;
+
+int leftSend = -1;
+int rightSend = -1;
+boolean leftRevSend = false;
+boolean rightRevSend = false;
+
 
 void setupOsc() {
-  oscP5 = new OscP5(this, 12000);
-  //Connect server
-  myRemoteLocation = new NetAddress("172.20.10.4", 12000);
+    talk = new XMPPMachine("chrliljebeta", "oiuOIU987)(/");
+  talk.openconnection();
+
 }
 
 
 void updateOsc() {
-  OscMessage myMessage = new OscMessage("/ufo/motorSet");  
-  myMessage.add(100);
-  myMessage.add(120);
-  myMessage.add(1);
-  myMessage.add(0);
-  oscP5.send(myMessage, myRemoteLocation);
+  if (leftSend != left || rightSend != right || leftRevSend != leftRev || rightRevSend != rightRev) {
+//    SendToAllFriends
+String strSend = "motorSet:";
+strSend += left+","; 
+strSend += right+",";
+strSend += leftRev?10:0+",";
+strSend += rightRev?10:0;
+  
+    leftSend = left;
+    rightSend = right;
+    leftRevSend = leftRev;
+    rightRevSend = rightRev;
+  }
 }
 
 void oscEvent(OscMessage theOscMessage) {
+  
 }
 

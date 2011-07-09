@@ -14,23 +14,23 @@ PFont androidFont;
 void setup()
 {	
 
-  setupCom();
 
   orientation(PORTRAIT);	
   frameRate(30);
 
   setupArduino();
   setupOsc();
-  
+  setupCom();
+
   fontList = PFont.list();
   androidFont = createFont(fontList[5], 35, true);
   textFont(androidFont);
 }
 
 void onResume() {
-  super.onResume();
   // Compass
   if (compass != null) compass.resume();
+  super.onResume();
 }
 
 void onPause() {
@@ -107,5 +107,16 @@ void draw()
   fill(0, 0, 120);
   rect(5, 0, (screenWidth-10)/2.0, 100);
   rect((screenWidth-10)/2.0, 0, (screenWidth-10)/2.0, 100);
+  
+  translate(width/2, 310);
+  scale(2);
+  rotate(direction);
+  beginShape();
+  vertex(0, -50);
+  vertex(-20, 60);
+  vertex(0, 50);
+  vertex(20, 60);
+  endShape(CLOSE);
 }
+
 
