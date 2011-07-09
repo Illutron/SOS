@@ -13,6 +13,9 @@ PFont androidFont;
 
 void setup()
 {	
+
+  setupCom();
+
   orientation(PORTRAIT);	
   frameRate(30);
 
@@ -23,7 +26,16 @@ void setup()
   textFont(androidFont);
 }
 
+void onResume() {
+  super.onResume();
+  // Compass
+  if (compass != null) compass.resume();
+}
 
+void onPause() {
+  if (compass != null) compass.pause();
+  super.onPause();
+}
 
 void draw() 
 {
