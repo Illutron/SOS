@@ -35,8 +35,8 @@ void updateArduino(){
   try
     {
       server.send(new byte[] {
-       (byte) ((((float)mouseX)/((float)width))*255.0f)
-       ,(byte) ((((float)mouseY)/((float)height))*255.0f)
+       (byte) left
+       ,(byte) right
        ,(byte) (leftRev?100:0)
        ,(byte) (rightRev?100:0)
       }
