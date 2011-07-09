@@ -6,6 +6,8 @@ int right=0;
 boolean leftRev=false;
 boolean rightRev=false;
 
+boolean fwdbkwOn = false;
+
 void setup() {
   size(screenWidth, screenHeight);
   background(0);
@@ -22,13 +24,38 @@ boolean onKeyDown(int keyCode, KeyEvent event) {
     right = 255;
     leftRev = false;
     rightRev = false;
+    fwdbkwOn = true;
   }
   if (keyCode == 99) {//square
     left = 255;
     right = 255;
     leftRev = true;
     rightRev = true;
+    fwdbkwOn = true;
   }
+  if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+    left = 0;
+  }
+  if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+    right = 0;
+  }
+  if (keyCode == 102) { //LEFT
+    if (!fwdbkwOn) {
+      leftRev = true;
+      rightRev = false;
+      left = 255;
+      right = 255;
+    }
+  }
+  if (keyCode == 103) { //RIGHT
+    if (fwdbkwOn) {
+      leftRev =false;
+      rightRev = true;
+      left = 255;
+      right = 255;
+    }
+  }
+
   return true;
 }
 
@@ -36,12 +63,32 @@ boolean onKeyUp(int keyCode, KeyEvent event) {
   if (keyCode == 23) {//X
     left = 0;
     right = 0;
+    fwdbkwOn = false;
   }
-   if (keyCode == 99) {//square
+  if (keyCode == 99) {//square
     left = 0;
     right = 0;
     leftRev = false;
     rightRev = false;
+    fwdbkwOn = false;
+  }
+  if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+    if (fwdbkwOn) {
+      left = 255;
+    }
+  }
+  if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+    if (fwdbkwOn) {
+      right = 255;
+    }
+  }
+  if (keyCode == 102) {
+    left = 0;
+    right = 0;
+  }
+  if (keyCode == 103) {
+    left = 0;
+    right = 0;
   }
   return true;
 }
