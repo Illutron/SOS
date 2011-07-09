@@ -1,35 +1,75 @@
 String[] fontList;
 PFont androidFont;
 
+float left=0;
+int right=0;
+boolean leftRev=false;
+boolean rightRev=false;
+
 void setup() {
   size(screenWidth, screenHeight);
   background(0);
   fontList = PFont.list();
   androidFont = createFont(fontList[5], 35, true);
   textFont(androidFont);
+
+  setupOsc();
+}
+
+boolean onKeyDown(int keyCode, KeyEvent event) {
+  if (keyCode == 23) {//X
+    left = 255;
+    right = 255;
+    leftRev = false;
+    rightRev = false;
+  }
+  if (keyCode == 99) {//square
+    left = 255;
+    right = 255;
+    leftRev = true;
+    rightRev = true;
+  }
+  return true;
+}
+
+boolean onKeyUp(int keyCode, KeyEvent event) {
+  if (keyCode == 23) {//X
+    left = 0;
+    right = 0;
+  }
+   if (keyCode == 99) {//square
+    left = 0;
+    right = 0;
+    leftRev = false;
+    rightRev = false;
+  }
+  return true;
 }
 
 void draw() {
+
+  updateOsc();
+
   background(0);
   // Display current GPS data
   text("Latitude: "+currentLatitude, 20, 40);
   text("Longitude: "+currentLongitude, 20, 75);
   text("Accuracy: "+currentAccuracy, 20, 110);
-  text("Provider: "+currentProvider, 20, 145);  
+  text("Provider: "+currentProvider, 20, 145);
+
+  fill(70, 100, 100);
+  stroke(255, 255, 255);
+  rect(screenWidth/2.0-100, screenHeight/2.0-100, 200, 200); 
+
+  fill(80, 255, 80);
+  if (leftRev)
+    fill(255, 0, 0);
+
+  arc(screenWidth/2.0-70, screenHeight/2.0+100, 50, 50, 0-HALF_PI, TWO_PI*left/255.0-HALF_PI);
+
+  fill(80, 255, 80);
+  if (rightRev)
+    fill(255, 0, 0);  
+  arc(screenWidth/2.0+70, screenHeight/2.0+100, 50, 50, 0-HALF_PI, TWO_PI*right/255.0-HALF_PI);
 }
 
-//-----------------------------------------------------------------------------------------
-
-void onResume() {
-  super.onResume();
-  // Build Listener
-  locationListener = new MyLocationListener();
-  // Acquire a reference to the system Location Manager
-  locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-  // Register the listener with the Location Manager to receive location updates
-  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-}
-
-void onPause() {
-  super.onPause();
-}

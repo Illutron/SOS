@@ -38,7 +38,7 @@ void updateArduino(){
        (byte) left
        ,(byte) right
        ,(byte) (leftRev?100:0)
-       ,(byte) (rightRev?100:0)
+       ,(byte) (rightRev?0:100)
       }
       ); 
     } 

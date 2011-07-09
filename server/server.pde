@@ -17,7 +17,8 @@ void setup()
   frameRate(30);
 
   setupArduino();
-
+  setupOsc();
+  
   fontList = PFont.list();
   androidFont = createFont(fontList[5], 35, true);
   textFont(androidFont);
@@ -27,6 +28,7 @@ void setup()
 
 void draw() 
 {
+  updateOsc();
   if (mousePressed) {
     if (!mouseDown) {
       mouseGuiElement = -1;

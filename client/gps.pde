@@ -21,7 +21,21 @@ String currentProvider = "";
 
 
 //-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 
+void onResume() {
+  super.onResume();
+  // Build Listener
+  locationListener = new MyLocationListener();
+  // Acquire a reference to the system Location Manager
+  locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+  // Register the listener with the Location Manager to receive location updates
+  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+}
+
+void onPause() {
+  super.onPause();
+}
 
 
 //-----------------------------------------------------------------------------------------
