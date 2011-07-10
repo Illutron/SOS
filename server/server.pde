@@ -17,6 +17,9 @@ boolean mouseDown = false;
 String[] fontList;
 PFont androidFont;
 
+float latDiff = 0;
+float lonDiff = 0;
+
 void setup()
 {	
 
@@ -53,6 +56,8 @@ void onPause() {
 
 void draw() 
 {
+  
+  
   updateOsc();
   if (mousePressed) {
     if (!mouseDown) {
@@ -134,8 +139,8 @@ void draw()
 
   if (curLocation != null) {
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal);
-    goal.setLongitude(lonGoal);
+    goal.setLatitude(latGoal+latDiff);
+    goal.setLongitude(lonGoal+lonDiff);
 
     float distance = goal.distanceTo(curLocation);
     float bearing = curLocation.bearingTo(goal);

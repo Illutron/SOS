@@ -67,13 +67,26 @@ void parseChat(String msg) {
     // pin = pin.substring(0, pin.indexOf(")"));  // strip the last )
     String arr[] = pin.split(";");
 
-    latGoal = Float.parseFloat(arr[0]);
-    lonGoal = Float.parseFloat(arr[1]);
+    latGoal =(float) Double.parseDouble(arr[0]);
+    lonGoal =(float) Double.parseDouble(arr[1]);
+    
+    println("Set lat: "+latGoal+" long:" + lonGoal);
   }
 
   if (msg.startsWith("modeSet:")) {
     String pin = msg.replaceAll("modeSet:", ""); // get 'pin)'
     mode = Integer.parseInt(pin);
   }
+  
+    if (msg.startsWith("diffSet:")) {
+
+    String pin = msg.replaceAll("diffSet:", ""); // get 'pin)'
+    // pin = pin.substring(0, pin.indexOf(")"));  // strip the last )
+    String arr[] = pin.split(";");
+
+    latDiff = Float.parseFloat(arr[0])/10000.0;
+    lonDiff = Float.parseFloat(arr[1])/10000.0;
+  }
+
 }
 

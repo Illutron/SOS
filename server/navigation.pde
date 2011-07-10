@@ -2,8 +2,8 @@
 float distanceToGoal() {
   if (curLocation != null) {
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal);
-    goal.setLongitude(lonGoal);
+    goal.setLatitude(latGoal+latDiff);
+    goal.setLongitude(lonGoal+lonDiff);
 
     float d = curLocation.distanceTo(goal);
 
@@ -16,8 +16,8 @@ float rotationToGoal() {
   if (curLocation != null) {
 
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal);
-    goal.setLongitude(lonGoal);
+    goal.setLatitude(latGoal+latDiff);
+    goal.setLongitude(lonGoal+lonDiff);
 
     float bearing = curLocation.bearingTo(goal);
 
@@ -40,17 +40,12 @@ void autopilot() {
   if (distanceToGoal() > 2) {
     float dir = -rotationToGoal();
 
+
     if (abs(dir) < 10) {
-      left = 255;
-      right = 255;
-      leftRev = false;
-      rightRev = false;
-    } 
-    else if (abs(dir) < 45) {
       leftRev = false;
       rightRev = false;
 
-      float d = 1-abs(dir)/45;
+      float d = 1-abs(dir)/10;
       if (dir < 0) {
         left = 255;
         right = (int)(255*d);
@@ -60,6 +55,20 @@ void autopilot() {
         left = (int)(255*d);
       }
     } 
+     if (abs(dir) < 30) {
+      leftRev = false;
+      rightRev = false;
+
+
+      if (dir < 0) {
+        left = 255;
+        right = 0;
+      } 
+      else {
+        right = 255;
+        left = 0;
+      }
+    }
     else {
       left = 255;
       right = 255;

@@ -5,7 +5,7 @@ int leftSend = -1;
 int rightSend = -1;
 boolean leftRevSend = false;
 boolean rightRevSend = false;
-
+int lastMsg = 0;
 
 void setupOsc() {
   talk = new XMPPMachine("chrliljebeta", "oiuOIU987)(/");
@@ -14,6 +14,17 @@ void setupOsc() {
 
 
 void updateOsc() {
+  if (millis() > lastMsg + 5000) {
+
+    lastMsg = millis();
+    String strSend = "diffSet:";
+    //    strSend += latDiff*10000+";"; 
+    //    strSend += lonDiff*10000;
+    strSend += "0"+";"; 
+    strSend += "0";
+    strSend = strSend.replace(".", "*");
+    talk.SendToAllFriends(strSend);
+  }  
   if (leftSend != left || rightSend != right || leftRevSend != leftRev || rightRevSend != rightRev) {
     //    SendToAllFriends
     String strSend = "motorSet:";
@@ -53,8 +64,10 @@ void parseChat(String msg) {
     pin = arr1[1].replaceAll("goalInfo:", ""); // get 'pin)'
     arr = pin.split(";");
 
-    serverGoalLat = Float.parseFloat(arr[0]);
-    serverGoalLon = Float.parseFloat(arr[1]);
+    if ((Float.parseFloat(arr[0]) != serverGoalLat || Float.parseFloat(arr[1]) != serverGoalLon) && !settingGoal) {
+      serverGoalLat = Float.parseFloat(arr[0]);
+      serverGoalLon = Float.parseFloat(arr[1]);
+    }
     serverGoalDistance = Float.parseFloat(arr[2]);
 
     pin = arr1[2].replaceAll("modeInfo:", ""); // get 'pin)'

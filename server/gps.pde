@@ -29,25 +29,29 @@ Location curLocation;
 
 // Define a listener that responds to location updates
 class MyLocationListener implements LocationListener {
-   void onLocationChanged(Location location) {
-      // Called when a new location is found by the network location provider.
-      currentLatitude  = (float)location.getLatitude();
-      currentLongitude = (float)location.getLongitude();
-      currentAccuracy  = (float)location.getAccuracy();
-      currentProvider  = location.getProvider();
-      curLocation = new Location(location);
-    }
-    void onProviderDisabled (String provider) { 
-      currentProvider = "";
-    }
+  void onLocationChanged(Location location) {
+    // Called when a new location is found by the network location provider.
+    currentLatitude  = (float)location.getLatitude();
+    currentLongitude = (float)location.getLongitude();
+    currentAccuracy  = (float)location.getAccuracy();
+    currentProvider  = location.getProvider();
+    curLocation = new Location(location);
 
-    void onProviderEnabled (String provider) { 
-      currentProvider = provider;
+    Set<String> extras = location.getExtras().keySet();
+    for (int i=0;i<extras.size();i++) {
+      println((extras.toArray()[i])+"  "+i);
     }
+  }
+  void onProviderDisabled (String provider) { 
+    currentProvider = "";
+  }
 
-    void onStatusChanged (String provider, int status, Bundle extras) {
-      // Nothing yet...
-    }
-    
+  void onProviderEnabled (String provider) { 
+    currentProvider = provider;
+  }
+
+  void onStatusChanged (String provider, int status, Bundle extras) {
+    // Nothing yet...
+  }
 }
 
