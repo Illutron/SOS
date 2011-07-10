@@ -15,6 +15,7 @@ float currentLatitude  = 0;
 float currentLongitude = 0;
 float currentAccuracy  = 0;
 String currentProvider = "";
+Location curLocation;
 
 //-----------------------------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ class MyLocationListener implements LocationListener {
       currentLongitude = (float)location.getLongitude();
       currentAccuracy  = (float)location.getAccuracy();
       currentProvider  = location.getProvider();
+      curLocation = new Location(location);
     }
     void onProviderDisabled (String provider) { 
       currentProvider = "";

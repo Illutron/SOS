@@ -1,9 +1,15 @@
 import android.util.Log;
+import android.location.Location;
 
 boolean leftRev = false;
 boolean rightRev = false;
 int left=0;
 int right=0;
+
+float latGoal = -1;
+float lonGoal = -1;
+
+int mode = 0; //0 motor mode ; 1 goal mode
 
 int mouseGuiElement = -1;
 boolean mouseDown = false;
@@ -30,6 +36,13 @@ void setup()
 void onResume() {
   // Compass
   if (compass != null) compass.resume();
+  // Build Listener
+  locationListener = new MyLocationListener();
+  // Acquire a reference to the system Location Manager
+  locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+  // Register the listener with the Location Manager to receive location updates
+  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
   super.onResume();
 }
 
@@ -73,7 +86,9 @@ void draw()
   }
 
 
-
+  if (mode == 1) {
+    autopilot();
+  }
 
   updateArduino();
 
@@ -107,9 +122,33 @@ void draw()
   fill(0, 0, 120);
   rect(5, 0, (screenWidth-10)/2.0, 100);
   rect((screenWidth-10)/2.0, 0, (screenWidth-10)/2.0, 100);
-  
-  translate(width/2, 310);
-  scale(2);
+
+
+  fill(255);
+  text("Latitude: "+currentLatitude, 20, 40+300);
+  text("Longitude: "+currentLongitude, 20, 75+300);
+  text("Accuracy: "+currentAccuracy, 20, 110+300);
+  text("G Latitude: "+latGoal, 20, 145+300);
+  text("G Longitude: "+lonGoal, 20, 180+300);
+
+
+  if (curLocation != null) {
+    Location goal = new Location(curLocation);
+    goal.setLatitude(latGoal);
+    goal.setLongitude(lonGoal);
+
+    float distance = goal.distanceTo(curLocation);
+    float bearing = curLocation.bearingTo(goal);
+
+    text("G Distance: "+distance, 20, 205+300);
+    text("G Bearing: "+rotationToGoal(), 20, 240+300);
+  }
+  text("Bearing: "+direction/TWO_PI*360, 20, 275+300);
+  text("Mode: "+mode, 20, 310+300);
+
+  pushMatrix();
+  translate(width/2, 230);
+  scale(1);
   rotate(direction);
   beginShape();
   vertex(0, -50);
@@ -117,6 +156,21 @@ void draw()
   vertex(0, 50);
   vertex(20, 60);
   endShape(CLOSE);
-}
+  popMatrix();
 
+  if (rotationToGoal() != 0){
+    fill(255, 0, 0);
+  pushMatrix();
+  translate(width/2, 230);
+  scale(1);
+  rotate(rotationToGoal()/360.0*TWO_PI);
+  beginShape();
+  vertex(0, -50);
+  vertex(-20, 60);
+  vertex(0, 50);
+  vertex(20, 60);
+  endShape(CLOSE);
+  popMatrix();
+  }
+}
 
