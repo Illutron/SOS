@@ -20,12 +20,14 @@ PFont androidFont;
 float latDiff = 0;
 float lonDiff = 0;
 
+ArrayList<float[]> waypoints;
+int currentWaypoint = 0;
+
 void setup()
 {	
-
-
   orientation(PORTRAIT);	
   frameRate(30);
+  waypoints = new ArrayList<float[]>();
 
   setupArduino();
   setupOsc();
@@ -56,7 +58,9 @@ void onPause() {
 
 void draw() 
 {
-  
+  if (distanceToGoal() < 8 &&  distanceToGoal() > 0 && currentWaypoint < waypoints.size()) {
+    currentWaypoint ++;
+  }
   
   updateOsc();
   if (mousePressed) {
@@ -137,10 +141,10 @@ void draw()
   text("G Longitude: "+lonGoal, 20, 180+300);
 
 
-  if (curLocation != null) {
+  if (curLocation != null && getCurrentWaypoint() != null) {
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal+latDiff);
-    goal.setLongitude(lonGoal+lonDiff);
+    goal.setLatitude(getCurrentWaypoint()[0]);
+    goal.setLongitude(getCurrentWaypoint()[1]);
 
     float distance = goal.distanceTo(curLocation);
     float bearing = curLocation.bearingTo(goal);
@@ -149,7 +153,7 @@ void draw()
     text("G Bearing: "+rotationToGoal(), 20, 240+300);
   }
   text("Bearing: "+direction/TWO_PI*360, 20, 275+300);
-  text("Mode: "+mode, 20, 310+300);
+  text("Mode: "+mode+" waypoint: "+currentWaypoint+"/"+waypoints.size(), 20, 310+300);
 
   pushMatrix();
   translate(width/2, 230);

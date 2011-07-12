@@ -1,5 +1,6 @@
 XMPPMachine talk;
-
+import android.media.ToneGenerator;
+import android.media.AudioManager;
 
 int leftSend = -1;
 int rightSend = -1;
@@ -14,17 +15,17 @@ void setupOsc() {
 
 
 void updateOsc() {
-  if (millis() > lastMsg + 5000) {
-
-    lastMsg = millis();
-    String strSend = "diffSet:";
-    //    strSend += latDiff*10000+";"; 
-    //    strSend += lonDiff*10000;
-    strSend += "0"+";"; 
-    strSend += "0";
-    strSend = strSend.replace(".", "*");
-    talk.SendToAllFriends(strSend);
-  }  
+  /* if (millis() > lastMsg + 5000) {
+   
+   lastMsg = millis();
+   String strSend = "diffSet:";
+   //    strSend += latDiff*10000+";"; 
+   //    strSend += lonDiff*10000;
+   strSend += "0"+";"; 
+   strSend += "0";
+   strSend = strSend.replace(".", "*");
+   talk.SendToAllFriends(strSend);
+   }  */
   if (leftSend != left || rightSend != right || leftRevSend != leftRev || rightRevSend != rightRev) {
     //    SendToAllFriends
     String strSend = "motorSet:";
@@ -63,11 +64,6 @@ void parseChat(String msg) {
 
     pin = arr1[1].replaceAll("goalInfo:", ""); // get 'pin)'
     arr = pin.split(";");
-
-    if ((Float.parseFloat(arr[0]) != serverGoalLat || Float.parseFloat(arr[1]) != serverGoalLon) && !settingGoal) {
-      serverGoalLat = Float.parseFloat(arr[0]);
-      serverGoalLon = Float.parseFloat(arr[1]);
-    }
     serverGoalDistance = Float.parseFloat(arr[2]);
 
     pin = arr1[2].replaceAll("modeInfo:", ""); // get 'pin)'
@@ -87,6 +83,25 @@ void parseChat(String msg) {
       right = Integer.parseInt(arr[1]);
       leftRev = (Integer.parseInt(arr[2])>0)?true:false;
       rightRev = (Integer.parseInt(arr[3])>0)?true:false;
+    }
+
+    pin = arr1[5].replaceAll("waypointInfo:", ""); // get 'pin)'
+    arr = pin.split(";");
+
+    waypoints.clear();
+    for (int i=0;i<arr.length;i+=2) {
+      float[] arr2 = new float[2];
+      arr2[0] = Float.parseFloat(arr[i]);
+      arr2[1] = Float.parseFloat(arr[i+1]);
+      waypoints.add(arr2);
+    }
+
+    pin = arr1[6].replaceAll("waypointSelInfo:", ""); // get 'pin)'
+    if (serverSelectedWaypoint != Integer.parseInt(pin)) {
+      ToneGenerator tone = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+      tone.startTone(ToneGenerator.TONE_CDMA_EMERGENCY_RINGBACK, 2000);
+
+      serverSelectedWaypoint = Integer.parseInt(pin);
     }
   }
 }

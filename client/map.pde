@@ -1,13 +1,13 @@
-int offset=268435456;
+float offset=268435456.0;
 float radius=offset/PI;
 
 int LToX(float x) {
-  return round(offset+radius*x*PI/180);
+  return round(offset+radius*x*PI/180.0);
 }
 
 int LToY(float y)
 {
-  return round(offset-radius*log((1+sin(y*PI/180))/(1-sin(y*PI/180)))/2);
+  return round(offset-radius*log((1+sin(y*PI/180.0))/(1-sin(y*PI/180.0)))/2.0);
 }
 
 float XToL(int x)
@@ -25,8 +25,8 @@ float[] Adjust(float X, float Y, float x, float y, int z, boolean w) {
   float[] ret;
   ret = new float[2];
   if (w) {
-    ret[0] = ((LToX(X)-LToX(x))>>(21-z)); 
-    ret[1] = ((LToY(Y)-LToY(y))>>(21-z));
+    ret[0] = (LToX(X)-LToX(x))>>(21-z); 
+    ret[1] = (LToY(Y)-LToY(y))>>(21-z);
   }
 
   else

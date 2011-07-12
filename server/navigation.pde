@@ -1,9 +1,20 @@
+float[] getCurrentWaypoint() {
+
+  if (waypoints.size() > currentWaypoint) {
+    return waypoints.get(currentWaypoint);
+  } 
+  else {
+    return null;
+  }
+}
+
 
 float distanceToGoal() {
-  if (curLocation != null) {
+  if (curLocation != null && getCurrentWaypoint() != null) {
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal+latDiff);
-    goal.setLongitude(lonGoal+lonDiff);
+   
+    goal.setLatitude(getCurrentWaypoint()[0]);
+    goal.setLongitude(getCurrentWaypoint()[1]);
 
     float d = curLocation.distanceTo(goal);
 
@@ -13,11 +24,11 @@ float distanceToGoal() {
 }
 
 float rotationToGoal() {
-  if (curLocation != null) {
+  if (curLocation != null && getCurrentWaypoint() != null) {
 
     Location goal = new Location(curLocation);
-    goal.setLatitude(latGoal+latDiff);
-    goal.setLongitude(lonGoal+lonDiff);
+    goal.setLatitude(getCurrentWaypoint()[0]);
+    goal.setLongitude(getCurrentWaypoint()[1]);
 
     float bearing = curLocation.bearingTo(goal);
 
@@ -41,11 +52,11 @@ void autopilot() {
     float dir = -rotationToGoal();
 
 
-    if (abs(dir) < 10) {
+    if (abs(dir) < 20) {
       leftRev = false;
       rightRev = false;
 
-      float d = 1-abs(dir)/10;
+      float d = 1-abs(dir)/20.0;
       if (dir < 0) {
         left = 255;
         right = (int)(255*d);
@@ -55,7 +66,7 @@ void autopilot() {
         left = (int)(255*d);
       }
     } 
-     if (abs(dir) < 30) {
+    else if (abs(dir) < 30) {
       leftRev = false;
       rightRev = false;
 
