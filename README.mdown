@@ -1,5 +1,5 @@
 # SOS
-Android app developed during Mobile inside out workshop at [Illutron](illutron.dk/posts/321).   
+Android app developed during Mobile inside out workshop at [Illutron](http://illutron.dk/posts/321).   
 ![SOS](http://illutron.dk/pictures/0000/3709/IMG_9100_custom750x500_.JPG?1310580756 "SOS Boat")
 
 ## Concept
