@@ -1,4 +1,29 @@
 # SOS
-Android app developed during Mobile inside out workshop at [Illutron](illutron.dk/posts/321).  
+### Android app developed during Mobile inside out workshop at [Illutron](illutron.dk/posts/321).   
 ![SOS](http://illutron.dk/pictures/0000/3709/IMG_9100_custom750x500_.JPG?1310580756 "SOS Boat")
+
+## Concept
+An exploration in the possibilities of mobile controlled electric motors on a small raft. Especially the many technologies a modern smartphone has built in and ready to use without expensive and fragile equipment. The raft should both be possible to be remote controlled from land via another phone and have an autopilot. 
+
+## Technical description 
+The heart of the raft is a modern Android phone with GSM, GPS, compass and multitouch display. This is connected via USB to an [Arduino](http://www.arduino.cc/) that runs some H-Bridges connected to two ordinary drill motors with custom made blades. 
+The Android phone is the controller of the motors. And depending on the mode it is controlled either via remote commands or its own autopilot:
+
+* _Mode 0:_ In this mode the android (the server) is listening for Google Chat messages. This processes is described on [Christian Liljedahl's homepage](http://christian.liljedahl.dk/guides/google-talk-in-max-msp). The messages looks like `motorSet:255,0,0,0` (for left motor on full, right motor on zero and both motors in forward position). This is just past on to the motors. At the same time status messages are send back with compass info, gps info etc etc. 
+
+* _Mode 1:_ Autopilot mode. In this mode you can from a remote add waypoints with `goalAdd:55.648149;12.553940` (Latitude, Longitude). When the raft is inside 8 meters of the waypoint it will continue to the next waypoint the list or stop. It works by all the time to calculate the bearing to the next waypoint relative to the north pole, and with the compass determine the rotation of the raft and regulate the left or right motor. It is a very brute force way of doing it but with pretty good results. 
+
+Finally there is a client running on another android phone with. On this phone there is visualization of the raft and a google maps view to see where it is in the world. On the remote its possible to remote control the raft around with the arrows, and in mode 1 to add new waypoints. 
+
+##DZL Test
+Dzl put up a task that the raft accomplished in the end of the workshop. The raft was supposed to sail to the other side of metropolis, to the other side of the channel and back again all by itself.  
+
+## Problems 
+The biggest challenge has been to learn the limitations of GPS and the compass. Very small influences from the outside where enough to get the compass confused and let the raft just go in circles. Also the GPS is floating quite a lot which makes it hard to hit very precise waypoints. 
+
+## Credits 
+Code: Jonas Jongejan & Benjamin Weber
+Electronics and motors: DZL
+Thanks to Christian Liljedahl, Mark Krawczuk, Matthew McGregor-Mento, Mads Høbye 
+ 
 
