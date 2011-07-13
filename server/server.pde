@@ -1,3 +1,7 @@
+//
+// Jonas Jongejan jonas@halfdanj.dk
+//
+
 import android.util.Log;
 import android.location.Location;
 
